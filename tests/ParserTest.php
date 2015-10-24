@@ -1,19 +1,20 @@
 <?php
+require('vendor/autoload.php');
+
+use EduDB\Parser;
 
 
-class StackTest extends PHPUnit_Framework_TestCase
+class ParserTest extends PHPUnit_Framework_TestCase
 {
-    public function testPushAndPop()
-    {
-        $stack = array();
-        $this->assertEquals(0, count($stack));
-
-        array_push($stack, 'foo');
-        $this->assertEquals('foo', $stack[count($stack)-1]);
-        $this->assertEquals(1, count($stack));
-
-        $this->assertEquals('foo', array_pop($stack));
-        $this->assertEquals(0, count($stack));
+    public function test_parse_columns(){
+        $obj = new Parser();
+        //$this->assertEquals(1, $obj->parse());
+        /*
+        foreach(get_declared_classes() as $name){
+            echo $name . "\n";
+        }
+         */
+        $this->assertEquals(1,1);
     }
 }
 
