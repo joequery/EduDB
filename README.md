@@ -19,3 +19,19 @@ complications interfering with the first few lessons. After a general
 understanding of basic SQL is reached, students can then be introduced to
 interacting with databases the standard way (since they will now understand why
 it's worth the trouble)
+
+Installation
+------------
+
+Dependency management is handled via Composer. To install the required packages,
+execute
+
+    $ php composer.php install
+
+Running tests
+-------------
+
+After you have installed the dependencies, execute the following to run the unit
+tests
+
+    $ ./vendor/bin/phpunit tests
