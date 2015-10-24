@@ -1,0 +1,6 @@
+{
+    "require": {
+        "rmccue/requests": ">=1.0",
+        "sunra/php-simple-html-dom-parser": "v1.5.0"
+    }
+}
