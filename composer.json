@@ -5,9 +5,8 @@
         "phpunit/phpunit": "4.8.*"
     },
     "autoload": {
-        "psr-0": {
-            "EduDB":        "./",
-            "EduDB\\Tests": "tests/"
+        "psr-4": {
+            "EduDB\\": "src/"
         }
     }
 }
