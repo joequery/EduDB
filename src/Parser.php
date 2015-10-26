@@ -19,7 +19,7 @@ class Parser{
             /*
                 Get the line **after** the column ASCII starts
 
-                Look for =>     +----+----------+
+                    Look for => +----+----------+
                 What we want => | id | username |
                                 +----+----------+
              */
