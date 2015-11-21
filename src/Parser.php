@@ -3,8 +3,9 @@
 namespace EduDB;
 
 class Parser{
-    public function parse($table_ascii){
-        return 0;
+
+    public function __construct($table_ascii){
+        $this->table_ascii = $table_ascii;
     }
 
     /*
@@ -12,8 +13,8 @@ class Parser{
         | id | username | => ['id', 'username']
         +----+----------+
      */
-    public function fields_from_table_header($table_ascii){
-        $lines = explode("\n", $table_ascii);
+    public function fields_from_table_header(){
+        $lines = explode("\n", $this->table_ascii);
         $header_row = NULL;
         foreach($lines as $i => $line){
             /*

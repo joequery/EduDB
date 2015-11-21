@@ -4,16 +4,18 @@ use EduDB\Parser;
 
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
-    public function test_fields_from_table_header(){
-    $parser = new Parser();
-
-        $header = "
+    protected function setUp(){
+        $this->table_ascii = "
         +----+----------+
         | id | username |
         +----+----------+
         ";
+    }
 
-        $headerFields = $parser->fields_from_table_header($header);
+    public function test_fields_from_table_header(){
+        $parser = new Parser($this->table_ascii);
+
+        $headerFields = $parser->fields_from_table_header();
         $expected = ['id', 'username'];
         $this->assertEquals($expected, $headerFields);
     }
