@@ -3,45 +3,77 @@
 namespace EduDB;
 
 class Parser{
+    private $table_rows;
+    private $fields;
 
     public function __construct($table_ascii){
         $this->table_ascii = $table_ascii;
     }
 
+    public function parse(){
+        $table_rows = $this->get_table_rows();
+        $fields = $this->fields_from_table_header($table_rows);
+        $raw_data = $this->get_raw_table_data($table_rows, $fields);
+
+        $db = [
+            'fields' => $fields,
+            'raw_data' => $raw_data
+        ];
+        return $db;
+    }
+
+
+    private function fields_from_table_header($table_rows){
+        return $table_rows[0];
+    }
+
+    private function get_raw_table_data($table_rows, $fields){
+        $data_rows = array_slice($table_rows, 1);
+        $data = [];
+        foreach($data_rows as $row){
+            $this_row = [];
+            foreach($row as $i => $value){
+                $field = $fields[$i];
+                $this_row[$field] = $value;
+            }
+            $data[]=$this_row;
+        }
+        return $data;
+    }
+
+    // ===============================================================
+    // Helpers
+    // ===============================================================
+
     /*
-        +----+----------+
-        | id | username | => ['id', 'username']
-        +----+----------+
-     */
-    public function fields_from_table_header(){
-        $lines = explode("\n", $this->table_ascii);
-        $header_row = NULL;
-        foreach($lines as $i => $line){
-            /*
-                Get the line **after** the column ASCII starts
+        Look for => +----+----------+
+    */
+    private function is_table_divider($line){
+        return strlen($line) && $line[0] == '+';
+    }
 
-                    Look for => +----+----------+
-                What we want => | id | username |
-                                +----+----------+
-             */
+    private function get_single_row_values($line){
+        $row_sections = explode('|', $line);
+        $raw_trimmed_values = array_map('trim', $row_sections);
+        $values = array_values(array_filter($raw_trimmed_values));
+        return $values;
+    }
+
+    private function get_table_rows(){
+        $table_lines = explode("\n", $this->table_ascii);
+        $rows = array_filter($table_lines, function($line){
             $line = trim($line);
-            if(strlen($line) && $line[0] == '+'){
-                // "| id | username |"
-                $header_row = $lines[$i+1];
-                break;
-            }
-        }
+            return strlen($line) && !$this->is_table_divider($line);
+        });
 
-        $header_sections = explode('|', $header_row);
-        $headers = [];
-        foreach($header_sections as $h){
-            $h = trim($h);
-            if(!empty($h)){
-                $headers[] = $h;
-            }
-        }
+        $rows_with_values = array_map(function($row){
+            return $this->get_single_row_values($row);
+        }, $rows);
 
-        return $headers;
+        // array_values used to reindex element indexes
+        $rows_with_values = array_values($rows_with_values);
+
+        return $rows_with_values;
     }
 }
 

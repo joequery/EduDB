@@ -9,15 +9,33 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         +----+----------+
         | id | username |
         +----+----------+
+        | 1  | joejoe   |
+        |  2 |   sally2 |
+        +----+----------+
         ";
     }
 
     public function test_fields_from_table_header(){
         $parser = new Parser($this->table_ascii);
-
-        $headerFields = $parser->fields_from_table_header();
+        $db = $parser->parse();
         $expected = ['id', 'username'];
-        $this->assertEquals($expected, $headerFields);
+        $this->assertEquals($db['fields'], $expected);
+    }
+
+    public function test_raw_table_data(){
+        $parser = new Parser($this->table_ascii);
+        $db = $parser->parse();
+        $expected = [
+            [
+                'id' => '1',
+                'username' => 'joejoe',
+            ],
+            [
+                'id' => '2',
+                'username' => 'sally2',
+            ]
+        ];
+        $this->assertEquals($db['raw_data'], $expected);
     }
 }
 
